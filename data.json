@@ -11,6 +11,28 @@
                 "https://discordapp.com/api/webhooks/466719545508495361/LLtIfCJwKAjhE4xnf61tJfKxhEejYvBAVSwHRxaocZ8JhO-REwhLvIMFVG8CMK7k6rGy"
             ]
         },
+                {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "758619812927004672"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/466719545508495361/LLtIfCJwKAjhE4xnf61tJfKxhEejYvBAVSwHRxaocZ8JhO-REwhLvIMFVG8CMK7k6rGy"
+            ]
+        },
+                {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "783281708137324549"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/466719545508495361/LLtIfCJwKAjhE4xnf61tJfKxhEejYvBAVSwHRxaocZ8JhO-REwhLvIMFVG8CMK7k6rGy"
+            ]
+        },
         {
             "IncludeReplyToUser" : false,
             "IncludeRetweet" : false,

@@ -280,6 +280,61 @@
             "IncludeRetweet" : false,
             "IncludeUserReply" : false,
             "twitter_ids" : [
+                "908327505391755265"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
+            ]
+        },
+        {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "849344094681870336"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
+            ]
+        },
+        {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "631577690"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
+            ]
+        },
+        {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "631577690"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
+            ]
+        },
+        {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                "2839430431"
+            ],
+            "webhook_urls" : [
+                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
+            ]
+        },
+        {
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
                 "956211718383955969"
             ],
             "webhook_urls" : [

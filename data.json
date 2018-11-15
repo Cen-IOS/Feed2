@@ -303,18 +303,6 @@
             "IncludeRetweet" : false,
             "IncludeUserReply" : false,
             "twitter_ids" : [
-                "908327505391755265"
-            ],
-            "webhook_urls" : [
-                "https://discordapp.com/api/webhooks/512612170266181642/knPG4z48yS-3jZTjkJTH1O2G0w8tm_dyUD9KhHwE3CGdaWS_693U60qYywt2lhBGOrT7",
-                "https://discordapp.com/api/webhooks/502154176948862976/enHq9PX07VQh9_Au1NjaVgpTllFcRUjjqqHxqDGxQ8kr4J7a2cntyC02Us_riGIOfZ9v"
-            ]
-        },
-        {
-            "IncludeReplyToUser" : false,
-            "IncludeRetweet" : false,
-            "IncludeUserReply" : false,
-            "twitter_ids" : [
                 "849344094681870336"
             ],
             "webhook_urls" : [

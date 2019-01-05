@@ -3,24 +3,22 @@ from tweepy import OAuthHandler, Stream
 from tweepy.api import API
 from discord import Webhook, RequestsWebhookAdapter, Embed
 from time import gmtime, strftime
+from time import sleep
 import discord
 import random
 import json
 import datetime
 import html
 import re
+from config import data_json
+import urllib3
 
 
 class StdOutListener(StreamListener):
-    def __init__(self, api=None, datad=None):
+    def __init__(self, api=None):
         self.api = api or API()
 
-        if datad is None:
-            with open('data.json') as data_file:
-                data_json = json.load(data_file)
-                self.data_d = data_json['Discord']
-        else:
-            self.data_d = datad
+        self.data_d = data_json['Discord']
 
     def _on_status(self, status):
         colors = [0x7f0000, 0x535900, 0x40d9ff, 0x8c7399, 0xd97b6c, 0xf2ff40, 0x8fb6bf, 0x502d59, 0x66504d,
@@ -77,10 +75,31 @@ class StdOutListener(StreamListener):
                 media_url = ''
                 media_type = ''
                 if 'extended_tweet' in data:
+                    for hashtag in sorted(data['extended_tweet']['entities']["hashtags"], key=lambda k: k["text"],
+                                          reverse=True):
+                        text = text.replace('#%s' % hashtag['text'],
+                                            '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                       hashtag['text']))
+
                     if 'media' in data['extended_tweet']['entities']:
                         for media in data['extended_tweet']['entities']['media']:
                             if media['type'] == 'photo':
                                 media_url = media['media_url']
+
+                for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"],
+                                      reverse=True):
+                    text = text.replace('#%s' % hashtag['text'],
+                                        '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                   hashtag['text']))
+
+                if "keyword_sets" in data_discord and data_discord["keyword_sets"] is not None:
+                    for keyword_set in data_discord["keyword_sets"]:
+                        keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
+                        keyword_set_present = all(keyword_present)
+                        if keyword_set_present:
+                            break
+                    if not keyword_set_present:
+                        break
 
                 if 'media' in data['entities']:
                     for media in data['entities']['media']:
@@ -123,10 +142,10 @@ class StdOutListener(StreamListener):
                 embed.set_author(name=username,
                                  url="https://twitter.com/" + data['user']['screen_name'],
                                  icon_url=icon_url)
-                embed.set_footer(text='Cập Nhật By ❥一 ϻя.Ƭ ✔',
+                embed.set_footer(text='Cập Nhật Bởi ❥一ϻя.Ƭ ✔ and Roͥsͣeͫ88 ☃',
                                  icon_url='https://cdn.discordapp.com/attachments/367295988546666509/531179898962837504/Untitled-13.png')
+
                 if media_url:
-                    #embed.set_thumbnail(url='https://media.giphy.com/media/wMlJSJaWbhVhm/giphy.gif')
                     embed.set_image(url=media_url)
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
@@ -143,6 +162,11 @@ class StdOutListener(StreamListener):
                                             '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                                userMention['screen_name']))
 
+                    for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"], reverse=True):
+                        text = text.replace('#%s' % hashtag['text'],
+                                            '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                       hashtag['text']))
+
                     text = html.unescape(text)
 
                     embed.add_field(name=data['quoted_status']['user']['screen_name'], value=text)
@@ -153,7 +177,32 @@ class StdOutListener(StreamListener):
                 if match:
                     webhook = Webhook.partial(match.group("id"), match.group("token"), adapter=RequestsWebhookAdapter())
                     try:
-                        webhook.send(embed=embed)
+                        if "custom_message" in data_discord and data_discord["custom_message"] is not None:
+                            webhook.send(embed=embed, content=data_discord["custom_message"])
+                        else:
+                            webhook.send(embed=embed)
+                    except discord.errors.NotFound as error:
+                        print('---------Error---------')
+                        print('discord.errors.NotFound')
+                        print("The Webhook URL you provided does not exist.")
+                        print(error)
+                        print('-----------------------')
+                    except discord.errors.Forbidden as error:
+                        print('---------Error---------')
+                        print('discord.errors.Forbidden')
+                        print("The authorization token for your Webhook is incorrect.")
+                        print(error)
+                        print('-----------------------')
+                        pass
+                    except discord.errors.InvalidArgument as error:
+                        print('---------Error---------')
+                        print('discord.errors.InvalidArgument')
+                        print("This should never happen. Contakt me https://discord.gg/JV5eUB "
+                              "and send me what follows below:")
+                        print(error)
+                        print(data)
+                        print('-----------------------')
+                        pass
                     except discord.errors.HTTPException as error:
                         print('---------Error---------')
                         print('discord.errors.HTTPException')
@@ -168,13 +217,13 @@ class StdOutListener(StreamListener):
         try:
             self._on_status(status)
         except Exception as error:
-           print('---------Error---------')
-           print('unknown error')
-           print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
-                 "and send him what follows below:")
-           print(error)
-           print(status)
-           print('-----------------------')
+            print('---------Error---------')
+            print('unknown error')
+            print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
+                  "and send him what follows below:")
+            print(error)
+            print(status)
+            print('-----------------------')
 
     def on_limit(self, track):
         """Called when a limitation notice arrives"""
@@ -206,20 +255,43 @@ class StdOutListener(StreamListener):
 if __name__ == '__main__':
     print('Bot started.')
 
-    with open('data.json') as data_file:
-        data_t = json.load(data_file)
-        data_file.close()
+    data_json['twitter_ids'] = []
+    for element in data_json['Discord']:
+        data_json['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_json['twitter_ids'])
 
-    data_t['twitter_ids'] = []
-    for element in data_t['Discord']:
-        data_t['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_t['twitter_ids'])
-
-    print('{} Twitter users are being followed.'.format(len(data_t['twitter_ids'])))
+    print('{} Twitter users are being followed.'.format(len(data_json['twitter_ids'])))
 
     l = StdOutListener()
-    auth = OAuthHandler(data_t['Twitter']['consumer_key'], data_t['Twitter']['consumer_secret'])
-    auth.set_access_token(data_t['Twitter']['access_token'], data_t['Twitter']['access_token_secret'])
+    auth = OAuthHandler(data_json['Twitter']['consumer_key'], data_json['Twitter']['consumer_secret'])
+    auth.set_access_token(data_json['Twitter']['access_token'], data_json['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
     print('Twitter stream started.')
-    stream.filter(follow=data_t['twitter_ids'])
+    while True:
+        try:
+            stream.filter(follow=data_json['twitter_ids'])
+        except urllib3.exceptions.ProtocolError as error:
+            print('---------Error---------')
+            print('This is probably caused by "Connection reset by peer." Ignore. Nothing you can do.')
+            print(error)
+            print('Sleeping for 10 seconds then continuing.')
+            sleep(10)
+            print('Twitter streaming continues.')
+            print('-----------------------')
+        except ConnectionResetError as error:
+            print('---------Error---------')
+            print('This is probably caused by "Connection reset by peer." Ignore. Nothing you can do.')
+            print(error)
+            print('Sleeping for 10 seconds then continuing.')
+            sleep(10)
+            print('Twitter streaming continues.')
+            print('-----------------------')
+        except Exception as error:
+            print('---------Error---------')
+            print('unknown error')
+            print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
+                  "and send him what follows below:")
+            print(error)
+            print(data_json)
+            print('-----------------------')
+            break

@@ -124,8 +124,9 @@ class StdOutListener(StreamListener):
                                  url="https://twitter.com/" + data['user']['screen_name'],
                                  icon_url=icon_url)
                 embed.set_footer(text='Cập Nhật By ❥一 ϻя.Ƭ ✔',
-                                 icon_url='https://cdn.discordapp.com/attachments/367295988546666509/531179898962837504/Untitled-13.png')
-
+                                 icon_url='https://cdn.discordapp.com/attachments/367295988546666509/531179898962837504/Untitled-13.png'),
+                embed.setThumbnail("https://media.giphy.com/media/wMlJSJaWbhVhm/giphy.gif"),
+                embed.setAuthor("Gotcha Mod", "https://i.imgur.com/lIg16zN.png")
                 if media_url:
                     # embed.set_thumbnail(url=media_url)
                     embed.set_image(url=media_url)

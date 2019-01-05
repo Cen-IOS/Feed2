@@ -122,13 +122,11 @@ class StdOutListener(StreamListener):
 
                 embed.set_author(name=username,
                                  url="https://twitter.com/" + data['user']['screen_name'],
-                                 icon_url=icon_url)
+                                 icon_url=icon_url='https://i.imgur.com/lIg16zN.png')
                 embed.set_footer(text='Cập Nhật By ❥一 ϻя.Ƭ ✔',
-                                 icon_url='https://cdn.discordapp.com/attachments/367295988546666509/531179898962837504/Untitled-13.png'),
-                embed.setThumbnail("https://media.giphy.com/media/wMlJSJaWbhVhm/giphy.gif"),
-                embed.setAuthor("Gotcha Mod", "https://i.imgur.com/lIg16zN.png")
+                                 icon_url='https://cdn.discordapp.com/attachments/367295988546666509/531179898962837504/Untitled-13.png')
                 if media_url:
-                    # embed.set_thumbnail(url=media_url)
+                    embed.set_thumbnail(url='https://media.giphy.com/media/wMlJSJaWbhVhm/giphy.gif')
                     embed.set_image(url=media_url)
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
